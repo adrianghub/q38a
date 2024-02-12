@@ -2,11 +2,7 @@ import type { Config } from "tailwindcss";
 
 const config = {
   darkMode: "class",
-  content: [
-    "./app/**/*.{ts,tsx}",
-    "./core/**/*.{ts,tsx}",
-    "./shared/**/*.{ts,tsx}",
-  ],
+  content: ["./app/**/*.{ts,tsx}", "./core/**/*.{ts,tsx}", "./shared/**/*.{ts,tsx}"],
   prefix: "",
   theme: {
     container: {
@@ -74,11 +70,6 @@ const config = {
       fontFamily: {
         inter: ["var(--font-inter)"],
         nunitoSans: ["var(--font-nunito-sans)"],
-      },
-      borderRadius: {
-        lg: "var(--radius)",
-        md: "calc(var(--radius) - 2px)",
-        sm: "calc(var(--radius) - 4px)",
       },
       boxShadow: {
         "light-100":

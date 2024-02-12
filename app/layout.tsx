@@ -1,4 +1,4 @@
-import { ThemeProvider } from "@/providers/theme-provider";
+import { ThemeProvider } from "@/core/providers/theme-provider";
 import { ClerkProvider } from "@clerk/nextjs";
 import type { Metadata } from "next";
 // eslint-disable-next-line camelcase
@@ -31,7 +31,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
+      <head />
       <body className={`${inter.variable} ${nunito.variable}`}>
         <ClerkProvider
           appearance={{
@@ -41,7 +42,14 @@ export default function RootLayout({
             },
           }}
         >
-          <ThemeProvider>{children}</ThemeProvider>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            {children}
+          </ThemeProvider>
         </ClerkProvider>
       </body>
     </html>

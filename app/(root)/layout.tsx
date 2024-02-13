@@ -1,4 +1,5 @@
 import LeftSidebar from "@/core/components/LeftSidebar";
+import RightSidebar from "@/core/components/RightSidebar";
 import Navbar from "@/core/components/navbar/Navbar";
 import React from "react";
 
@@ -17,7 +18,7 @@ export default function RootLayout({
           <div className="mx-auto h-[2000px] w-full max-w-5xl">{children}</div>
         </section>
 
-        {/* <RightSidebar /> */}
+        <RightSidebar />
       </div>
     </main>
   );

@@ -34,7 +34,7 @@ const config = {
           500: "#101012",
         },
         light: {
-          900: "#FFFFFF",
+          900: "#fafafa",
           800: "#F4F6F8",
           850: "#FDFDFD",
           700: "#DCE3F1",

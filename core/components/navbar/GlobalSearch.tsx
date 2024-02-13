@@ -12,12 +12,12 @@ const GlobalSearch = () => {
           width={24}
           height={24}
           alt="search icon"
-          className="cursor-pointer"
+          className="invert-colors cursor-pointer"
         />
 
         <Input
           type="search"
-          placeholder="Search"
+          placeholder="Search anything"
           value=""
           onChange={() => {}}
           className="paragraph-regular no-focus placeholder border-none shadow-none outline-none"

@@ -12,7 +12,7 @@ type SearchProps = {
   placeholder: string;
 };
 
-export const Search = ({
+export const SearchInput = ({
   placeholder,
   route = "/",
   iconPosition = "left",

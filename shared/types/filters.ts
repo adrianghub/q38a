@@ -1,4 +1,4 @@
 export type Option = {
   name: string;
-  value: string;
+  value: string | number;
 };

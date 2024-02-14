@@ -1,12 +1,9 @@
 import Link from "next/link";
+import { Tag } from "../types/questions";
 import { Badge } from "./ui/badge";
 
 type TagPillProps = {
-  tag: {
-    _id: number;
-    name: string;
-    totalQuestions: number;
-  };
+  tag: Tag;
   showCount?: boolean;
 };
 

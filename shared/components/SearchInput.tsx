@@ -8,7 +8,7 @@ type SearchProps = {
   route?: string;
   iconPosition?: "left" | "right";
   iconUrl?: string;
-  classNames?: string;
+  otherClasses?: string;
   placeholder: string;
 };
 
@@ -17,12 +17,12 @@ export const SearchInput = ({
   route = "/",
   iconPosition = "left",
   iconUrl = "/assets/icons/search.svg",
-  classNames,
+  otherClasses,
 }: SearchProps) => (
   <div
     className={cn(
       "background-light800_darkgradient flex min-h-[56px] grow items-center gap-4 rounded-xl px-4",
-      classNames
+      otherClasses
     )}
   >
     {iconPosition === "left" && (

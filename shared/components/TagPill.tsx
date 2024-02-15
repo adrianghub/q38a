@@ -1,6 +1,6 @@
+import { Badge } from "@/core/components/ui/badge";
 import Link from "next/link";
 import { Tag } from "../types/questions";
-import { Badge } from "./ui/badge";
 
 type TagPillProps = {
   tag: Tag;

@@ -80,7 +80,7 @@ body {
 }
 
 .custom-scrollbar::-webkit-scrollbar-track {
-  background: #fafafa;
+  background: #ffffff;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {

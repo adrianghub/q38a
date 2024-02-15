@@ -71,7 +71,7 @@ export const QuestionsList = () => (
     {questions.length > 1 ? (
       questions.map((question) => <QuestionCard key={question._id} {...question} />)
     ) : (
-      <NoResult text="No questions found" />
+      <NoResult text="No questions found." />
     )}
   </div>
 );

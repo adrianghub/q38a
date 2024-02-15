@@ -1,5 +1,5 @@
+import { Button } from "@/core/components/ui/button";
 import Link from "next/link";
-import { Button } from "./ui/button";
 
 type NoResultProps = {
   text?: string;
@@ -16,7 +16,7 @@ const NoResult = ({
     {text && <h2 className="h2-semibold text-dark200_light900">{text}</h2>}
 
     <Link href={backButtonHref}>
-      <Button className="paragraph-medium mt-5 min-h-[46px] bg-primary-500 px-4 py-3">
+      <Button className="paragraph-medium mt-5 min-h-[46px] bg-primary-500 px-4 py-3 text-primary-100">
         {backButtonText}
       </Button>
     </Link>

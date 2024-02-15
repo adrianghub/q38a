@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@/shared/components/ui/button";
+import { Button } from "@/core/components/ui/button";
 import Link from "next/link";
 import { QuestionsFilters } from "./QuestionsFilters";
 import { QuestionsList } from "./QuestionsList";

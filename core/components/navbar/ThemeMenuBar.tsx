@@ -6,7 +6,7 @@ import {
   MenubarItem,
   MenubarMenu,
   MenubarTrigger,
-} from "@/shared/components/ui/menubar";
+} from "@/core/components/ui/menubar";
 
 import { themes } from "@/shared/constants/themes";
 import { ThemeMode } from "@/shared/types/theme";

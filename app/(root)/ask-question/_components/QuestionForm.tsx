@@ -14,6 +14,8 @@ import { Input } from "@/core/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 // import Image from "next/image";
 import { Badge } from "@/core/components/ui/badge";
+import { createQuestion } from "@/shared/lib/actions/questions.action";
+import { usePathname, useRouter } from "next/navigation";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -23,7 +25,7 @@ import { CustomTextEditor } from "./Editor";
 // TODO: Remove temp variable
 const mode: string = "create";
 
-const QuestionForm = () => {
+const QuestionForm = ({ userId }: { userId: string }) => {
   const form = useForm<z.infer<typeof questionsSchema>>({
     resolver: zodResolver(questionsSchema),
     defaultValues: {
@@ -33,6 +35,8 @@ const QuestionForm = () => {
     },
   });
   const [isSubmitting, setIsSubmitting] = React.useState(false);
+  const router = useRouter();
+  const pathname = usePathname();
 
   const handleInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>, field: any) => {
     if (e.key === "Enter" && field.name === "tags") {
@@ -67,11 +71,21 @@ const QuestionForm = () => {
     );
   };
 
-  const handleSubmit = (values: z.infer<typeof questionsSchema>) => {
+  const handleSubmit = async (values: z.infer<typeof questionsSchema>) => {
     setIsSubmitting(true);
 
     try {
-      console.log(values);
+      const quest = await createQuestion({
+        title: values.title,
+        description: values.description,
+        tags: values.tags,
+        authorId: JSON.parse(userId),
+        pathname,
+      });
+
+      console.log(quest);
+
+      router.push("/");
     } catch (error) {
     } finally {
       setIsSubmitting(false);
@@ -115,7 +129,7 @@ const QuestionForm = () => {
                 Detailed explanation of your problem <span className="text-primary-500">*</span>
               </FormLabel>
               <FormControl className="mt-3.5">
-                <CustomTextEditor />
+                <CustomTextEditor control={field} />
               </FormControl>
 
               <FormMessage className="text-red-600" />

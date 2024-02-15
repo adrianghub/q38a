@@ -2,8 +2,20 @@
 
 import { Editor } from "@tinymce/tinymce-react";
 import { useRef } from "react";
+import { ControllerRenderProps } from "react-hook-form";
 
-export const CustomTextEditor = () => {
+export const CustomTextEditor = ({
+  control,
+}: {
+  control: ControllerRenderProps<
+    {
+      title: string;
+      description: string;
+      tags: string[];
+    },
+    "description"
+  >;
+}) => {
   const editorRef = useRef<HTMLInputElement>(null);
 
   return (
@@ -11,6 +23,8 @@ export const CustomTextEditor = () => {
       apiKey={process.env.NEXT_PUBLIC_TINY_MCE_API_KEY}
       // @ts-ignore
       onInit={(_evt, editor) => (editorRef.current = editor)}
+      onBlur={control.onBlur}
+      onEditorChange={(content) => control.onChange(content)}
       initialValue=""
       init={{
         height: 350,

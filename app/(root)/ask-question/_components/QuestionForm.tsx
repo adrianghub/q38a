@@ -75,15 +75,13 @@ const QuestionForm = ({ userId }: { userId: string }) => {
     setIsSubmitting(true);
 
     try {
-      const quest = await createQuestion({
+      await createQuestion({
         title: values.title,
         description: values.description,
         tags: values.tags,
         authorId: JSON.parse(userId),
         pathname,
       });
-
-      console.log(quest);
 
       router.push("/");
     } catch (error) {

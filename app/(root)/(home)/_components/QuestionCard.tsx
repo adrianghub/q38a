@@ -14,16 +14,14 @@ export const QuestionCard = ({ _id, title, tags, author, publishedAt, statistics
     </div>
 
     <div className="flex flex-wrap gap-4">
-      {tags.map((tag) => (
-        <TagPill key={tag._id} tag={tag} />
-      ))}
+      {tags?.map((tag) => <TagPill key={tag._id} tag={tag} />)}
     </div>
 
     <div className="mt-3 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
       <p className="body-medium flex gap-1">
         <Link href={`/profile/${author._id}`}>{author.name}</Link>
         <span>•</span>
-        <span className="body-medium text-dark400_light700">asked {publishedAt}</span>
+        <span className="body-medium text-dark400_light700">asked {publishedAt.toISOString()}</span>
       </p>
 
       <div className="flex gap-3">

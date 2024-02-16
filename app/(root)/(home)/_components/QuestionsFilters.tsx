@@ -1,3 +1,5 @@
+"use client";
+
 import { Button } from "@/core/components/ui/button";
 import { SearchInput } from "@/shared/components/SearchInput";
 import { SelectInput } from "@/shared/components/SelectInput";

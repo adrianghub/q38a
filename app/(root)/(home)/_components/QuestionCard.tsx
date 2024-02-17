@@ -1,5 +1,6 @@
 import { TagPill } from "@/shared/components/TagPill";
 import { Question } from "@/shared/types/questions";
+import Image from "next/image";
 import Link from "next/link";
 import IconInfo from "./IconInfo";
 
@@ -19,7 +20,16 @@ export const QuestionCard = ({ _id, title, tags, author, publishedAt, statistics
 
     <div className="mt-3 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
       <p className="body-medium flex gap-1">
-        <Link href={`/profile/${author._id}`}>{author.name}</Link>
+        <Link href={`/profile/${author._id}`} className="flex items-center gap-1">
+          <Image
+            src={author.avatar}
+            alt="author avatar"
+            width={16}
+            height={16}
+            className="rounded-full object-contain"
+          />
+          {author.name}
+        </Link>
         <span>•</span>
         <span className="body-medium text-dark400_light700">asked {publishedAt.toISOString()}</span>
       </p>

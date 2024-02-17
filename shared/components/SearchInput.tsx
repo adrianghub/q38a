@@ -26,7 +26,7 @@ export const SearchInput = ({
     )}
   >
     {iconPosition === "left" && (
-      <Image src={iconUrl} width={24} height={24} alt="" className="cursor-pointer" />
+      <Image src={iconUrl} width={24} height={24} alt="" className="cursor-pointer dark:invert" />
     )}
 
     <Input
@@ -38,7 +38,7 @@ export const SearchInput = ({
     />
 
     {iconPosition === "right" && (
-      <Image src={iconUrl} width={24} height={24} alt="" className="invert-colors cursor-pointer" />
+      <Image src={iconUrl} width={24} height={24} alt="" className="cursor-pointer dark:invert" />
     )}
   </div>
 );

@@ -28,7 +28,7 @@ export const QuestionsFilters = () => {
 
   return (
     <>
-      <div className="mt-11 flex justify-between gap-5 max-sm:flex-col sm:items-center">
+      <div className="flex justify-between gap-5 max-sm:flex-col sm:items-center">
         <SearchInput placeholder="Search through Questions..." otherClasses="flex-1" />
 
         <SelectInput

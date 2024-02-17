@@ -12,7 +12,7 @@ export const GlobalSearchInput = () => {
           width={24}
           height={24}
           alt="search icon"
-          className="cursor-pointer"
+          className="cursor-pointer dark:invert"
         />
 
         <Input

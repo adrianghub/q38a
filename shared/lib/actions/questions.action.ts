@@ -1,7 +1,11 @@
 "use server";
 
 import { Question } from "@/shared/types/questions";
-import { CreateQuestionParams, GetQuestionsParams } from "@/shared/types/shared";
+import {
+  CreateQuestionParams,
+  GetQuestionByIdParams,
+  GetQuestionsParams,
+} from "@/shared/types/shared";
 import { revalidatePath } from "next/cache";
 import { connectToDatabase } from "../db/db";
 import QuestionModel, { IQuestion } from "../db/models/question.model";
@@ -18,6 +22,29 @@ export async function getQuestions(params: GetQuestionsParams) {
       .sort({ publishedAt: -1 })) as IQuestion[];
 
     return mapQuestionsDtoToQuestions(questionsDto);
+  } catch (error) {
+    console.error("Error getting questions", error);
+    throw error;
+  }
+}
+
+export async function getQuestionById(params: GetQuestionByIdParams) {
+  try {
+    connectToDatabase();
+
+    const { id } = params;
+
+    const question = (await QuestionModel.findById(id)
+      .populate({
+        path: "tags",
+        model: Tag,
+      })
+      .populate({
+        path: "author",
+        model: User,
+      })) as IQuestion;
+
+    return question;
   } catch (error) {
     console.error("Error getting questions", error);
     throw error;
@@ -81,5 +108,4 @@ const mapQuestionsDtoToQuestions = (questionsDto: IQuestion[]): Question[] =>
           value: doc.upvotes.length + doc.downvotes.length,
         },
       },
-    }))
-    .map(({ views, answers, votes, ...rest }) => rest);
+    }));

@@ -3,6 +3,7 @@
 import {
   CreateUserParams,
   DeleteUserParams,
+  GetAllUsersParams,
   GetUserByIdParams,
   UpdateUserParams,
 } from "@/shared/types/shared";
@@ -10,6 +11,21 @@ import { revalidatePath } from "next/cache";
 import { connectToDatabase } from "../db/db";
 import QuestionModel from "../db/models/question.model";
 import User from "../db/models/user.model";
+
+export async function getUsers(params: GetAllUsersParams) {
+  try {
+    connectToDatabase();
+
+    // const { page = 1, pageSize = 20, filter, searchQuery } = params
+
+    const users = await User.find({}).sort({ createdAt: -1 });
+
+    return users;
+  } catch (error) {
+    console.error("Error getting users", error);
+    throw new Error("Error getting users");
+  }
+}
 
 export async function getUserById(params: GetUserByIdParams) {
   try {
@@ -24,6 +40,7 @@ export async function getUserById(params: GetUserByIdParams) {
     return user;
   } catch (error) {
     console.error("Error getting user", error);
+    throw new Error("Error getting user");
   }
 }
 

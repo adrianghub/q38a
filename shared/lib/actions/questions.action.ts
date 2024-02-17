@@ -1,14 +1,10 @@
 "use server";
 
-import {
-  CreateQuestionParams,
-  GetQuestionsParams,
-  Question,
-  QuestionDto,
-} from "@/shared/types/questions";
+import { Question } from "@/shared/types/questions";
+import { CreateQuestionParams, GetQuestionsParams } from "@/shared/types/shared";
 import { revalidatePath } from "next/cache";
 import { connectToDatabase } from "../db/db";
-import QuestionModel from "../db/models/question.model";
+import QuestionModel, { IQuestion } from "../db/models/question.model";
 import Tag from "../db/models/tag.model";
 import User from "../db/models/user.model";
 
@@ -19,7 +15,7 @@ export async function getQuestions(params: GetQuestionsParams) {
     const questionsDto = (await QuestionModel.find({})
       .populate({ path: "tags", model: Tag })
       .populate({ path: "author", model: User })
-      .sort({ publishedAt: -1 })) as QuestionDto[];
+      .sort({ publishedAt: -1 })) as IQuestion[];
 
     return mapQuestionsDtoToQuestions(questionsDto);
   } catch (error) {
@@ -66,7 +62,7 @@ export async function createQuestion(params: CreateQuestionParams) {
   }
 }
 
-const mapQuestionsDtoToQuestions = (questionsDto: QuestionDto[]): Question[] =>
+const mapQuestionsDtoToQuestions = (questionsDto: IQuestion[]): Question[] =>
   questionsDto
     // @ts-ignore
     .map(({ _doc: doc }) => ({

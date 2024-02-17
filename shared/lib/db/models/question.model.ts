@@ -1,4 +1,4 @@
-import { Document, Schema, model, models } from "mongoose";
+import { Document, Model, Schema, model, models } from "mongoose";
 
 export interface IQuestion extends Document {
   title: string;
@@ -61,6 +61,7 @@ const QuestionSchema = new Schema<IQuestion>({
   },
 });
 
-const Question = models.Question || model<IQuestion>("Question", QuestionSchema);
+const QuestionModel: Model<IQuestion> =
+  models.Question || model<IQuestion>("Question", QuestionSchema);
 
-export default Question;
+export default QuestionModel;

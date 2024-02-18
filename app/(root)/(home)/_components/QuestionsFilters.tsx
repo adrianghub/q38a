@@ -1,37 +1,42 @@
 "use client";
 
 import { Button } from "@/core/components/ui/button";
-import { SearchInput } from "@/shared/components/SearchInput";
-import { SelectInput } from "@/shared/components/SelectInput";
-import { QuestionFilters } from "@/shared/constants/filters";
+import { SelectFilterInput } from "@/shared/components/SelectFilterInput";
+import { HomePageFilters } from "@/shared/constants/filters";
+import { useFilter } from "@/shared/lib/hooks/useFilter";
 import { cn } from "@/shared/lib/utils";
 import { Option } from "@/shared/types/filters";
-import { useState } from "react";
+import React from "react";
 
-const filters: Option[] = QuestionFilters;
+type QuestionsFiltersParams = {
+  children: React.ReactNode;
+  route?: string;
+};
 
-export const QuestionsFilters = () => {
-  const [selectedFilter, setSelectedFilter] = useState<Option | null>(null);
+const filters: Option[] = HomePageFilters;
+
+export const QuestionsFilters = ({ children, route = "/" }: QuestionsFiltersParams) => {
+  const { selectedFilter, setSelectedFilter } = useFilter({ route });
 
   const selectFilter = (filter: Option) => {
     const foundFilter = filters.find((f) => f.value === filter.value);
 
-    if (foundFilter === selectedFilter) {
-      setSelectedFilter(null);
+    if (foundFilter?.value === selectedFilter) {
+      setSelectedFilter("");
       return;
     }
 
     if (foundFilter) {
-      setSelectedFilter(foundFilter);
+      setSelectedFilter(foundFilter.value as string);
     }
   };
 
   return (
     <>
       <div className="flex justify-between gap-5 max-sm:flex-col sm:items-center">
-        <SearchInput placeholder="Search through Questions..." otherClasses="flex-1" />
+        {children}
 
-        <SelectInput
+        <SelectFilterInput
           options={filters}
           placeholder="Select filter"
           containerClasses="hidden max-md:flex"
@@ -45,7 +50,7 @@ export const QuestionsFilters = () => {
             onClick={() => selectFilter(filter)}
             className={cn(
               "body-medium rounded-lg px-6 py-3 capitalize shadow-none",
-              selectedFilter === filter
+              selectedFilter === filter.value
                 ? "bg-primary-100 dark:bg-dark-400 text-primary-500"
                 : "bg-light-800 text-light-500 dark:bg-dark-300 dark:text-light-500 hover:bg-primary-100 hover:dark:bg-dark-400"
             )}

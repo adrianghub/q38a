@@ -1,6 +1,6 @@
 import NoResult from "@/shared/components/NoResult";
 import { SearchInput } from "@/shared/components/SearchInput";
-import { SelectInput } from "@/shared/components/SelectInput";
+import { SelectFilterInput } from "@/shared/components/SelectFilterInput";
 import { UserFilters } from "@/shared/constants/filters";
 import { getUsers } from "@/shared/lib/actions/user.action";
 import { auth } from "@clerk/nextjs";
@@ -21,7 +21,7 @@ const Page = async () => {
       <div className="mt-11 flex justify-between gap-5 max-sm:flex-col sm:items-center">
         <SearchInput placeholder="Search by username..." otherClasses="flex-1" route="/community" />
 
-        <SelectInput
+        <SelectFilterInput
           options={UserFilters}
           placeholder="Select filter"
           containerClasses="flex"

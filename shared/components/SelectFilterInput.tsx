@@ -1,5 +1,12 @@
-
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/core/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/core/components/ui/select";
+import { useFilter } from "../lib/hooks/useFilter";
 import { cn } from "../lib/utils";
 import { Option } from "../types/filters";
 
@@ -8,17 +15,21 @@ type SelectInputProps = {
   placeholder: string;
   containerClasses?: string;
   otherClasses?: string;
+  route?: string;
 };
 
-export const SelectInput = ({
+export const SelectFilterInput = ({
   options,
   placeholder,
   containerClasses,
   otherClasses,
+  route = "/",
 }: SelectInputProps) => {
+  const { selectedFilter, setSelectedFilter } = useFilter({ route });
+
   return (
     <div className={cn("relative", containerClasses)}>
-      <Select>
+      <Select onValueChange={(value) => setSelectedFilter(value)} value={selectedFilter}>
         <SelectTrigger
           className={cn(
             "body-regular border-light-800 dark:border-dark-300 background-light800_dark300 text-dark500_light700 px-5 py-2.5",
@@ -30,6 +41,7 @@ export const SelectInput = ({
           </div>
         </SelectTrigger>
         <SelectContent>
+          <SelectItem value="all">All</SelectItem>
           <SelectGroup>
             {options.map((option) => (
               <SelectItem key={option.value} value={String(option.value)}>

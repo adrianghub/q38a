@@ -17,7 +17,7 @@ export async function getQuestions(params: GetQuestionsParams) {
   try {
     connectToDatabase();
 
-    const { searchQuery } = params;
+    const { searchQuery, filter } = params;
 
     const query: FilterQuery<typeof QuestionModel> = {};
 
@@ -27,10 +27,27 @@ export async function getQuestions(params: GetQuestionsParams) {
       query.$or = [{ title: { $regex: regex } }, { description: { $regex: regex } }];
     }
 
+    let sortOptions = {};
+
+    switch (filter) {
+      case "newest":
+        sortOptions = { publishedAt: -1 };
+        break;
+      case "frequent":
+        sortOptions = { answers: -1 };
+        break;
+      case "unanswered":
+        query.answers = { $size: 0 };
+        break;
+      default:
+        sortOptions = { publishedAt: -1 };
+        break;
+    }
+
     const questionsDto = (await QuestionModel.find(query)
       .populate({ path: "tags", model: Tag })
       .populate({ path: "author", model: User })
-      .sort({ publishedAt: -1 })) as IQuestion[];
+      .sort(sortOptions)) as IQuestion[];
 
     return mapQuestionsDtoToQuestions(questionsDto);
   } catch (error) {

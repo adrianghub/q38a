@@ -1,3 +1,4 @@
+import Pagination from "@/shared/components/Pagination";
 import { SearchInput } from "@/shared/components/SearchInput";
 import { getQuestions } from "@/shared/lib/actions/questions.action";
 import { Question } from "@/shared/types/questions";
@@ -9,9 +10,10 @@ export default async function HomePage({
 }: {
   searchParams: { [key: string]: string | string[] | undefined };
 }) {
-  const questions: Question[] = await getQuestions({
+  const result: { questions: Question[]; hasNext: boolean } = await getQuestions({
     searchQuery: ((searchParams.q || "") as string).trim(),
     filter: searchParams.filter as string,
+    page: searchParams.page ? +searchParams.page : 1,
   });
 
   return (
@@ -20,7 +22,14 @@ export default async function HomePage({
         <SearchInput placeholder="Search through Questions..." otherClasses="flex-1" />
       </QuestionsFilters>
 
-      <QuestionsList questions={questions} />
+      <QuestionsList questions={result.questions} />
+
+      {result.questions.length > 0 && (
+        <Pagination
+          pageNumber={searchParams?.page ? +searchParams.page : 1}
+          hasNext={result.hasNext}
+        />
+      )}
     </>
   );
 }

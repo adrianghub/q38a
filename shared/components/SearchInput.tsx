@@ -2,9 +2,8 @@
 
 import { Input } from "@/shared/ui/input";
 import Image from "next/image";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
-import { buildUrlQuery, cn, removeKeysFromQuery } from "../lib/utils";
+import { useSearch } from "../lib/hooks/useSearch";
+import { cn } from "../lib/utils";
 
 type SearchProps = {
   route?: string;
@@ -21,35 +20,7 @@ export const SearchInput = ({
   iconUrl = "/assets/icons/search.svg",
   otherClasses,
 }: SearchProps) => {
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const pathname = usePathname();
-  const [searchQuery, setSearchQuery] = useState<string>(searchParams.get("q") || "");
-
-  useEffect(() => {
-    const debounce = setTimeout(() => {
-      if (searchQuery === "" && pathname === route) {
-        const newUrl = removeKeysFromQuery({
-          params: searchParams.toString(),
-          keysToRemove: ["q"],
-        });
-
-        router.push(newUrl, { scroll: false });
-      }
-
-      if (searchQuery !== "") {
-        const newUrl = buildUrlQuery({
-          params: searchParams.toString(),
-          key: "q",
-          value: searchQuery,
-        });
-
-        router.push(newUrl, { scroll: false });
-      }
-    }, 500);
-    return () => clearTimeout(debounce);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pathname, searchQuery]);
+  const { searchQuery, setSearchQuery } = useSearch({ route });
 
   return (
     <div

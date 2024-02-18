@@ -44,11 +44,8 @@ export const removeKeysFromQuery = ({
     delete currentUrl[key];
   });
 
-  return qs.stringifyUrl(
-    {
-      url: window.location.pathname,
-      query: currentUrl,
-    },
-    { skipNull: true, skipEmptyString: true }
-  );
+  return qs.stringifyUrl({
+    url: window.location.pathname,
+    query: currentUrl,
+  });
 };

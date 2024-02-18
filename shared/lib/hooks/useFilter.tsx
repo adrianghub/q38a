@@ -9,26 +9,40 @@ export function useFilter({ route = "/" }) {
   const [selectedFilter, setSelectedFilter] = useState<string>(searchParams.get("filter") || "");
 
   useEffect(() => {
-    if ((selectedFilter === "" && pathname === route) || selectedFilter === "all") {
-      setSelectedFilter("");
+    const newUrl = removeKeysFromQuery({
+      params: searchParams.toString(),
+      keysToRemove: ["page"],
+    });
 
-      const newUrl = removeKeysFromQuery({
-        params: searchParams.toString(),
-        keysToRemove: ["filter"],
-      });
+    router.push(newUrl, { scroll: false });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedFilter]);
 
-      router.push(newUrl, { scroll: false });
-    }
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if ((selectedFilter === "" && pathname === route) || selectedFilter === "all") {
+        setSelectedFilter("");
 
-    if (selectedFilter !== "") {
-      const newUrl = buildUrlQuery({
-        params: searchParams.toString(),
-        key: "filter",
-        value: selectedFilter,
-      });
+        const newUrl = removeKeysFromQuery({
+          params: searchParams.toString(),
+          keysToRemove: ["filter"],
+        });
 
-      router.push(newUrl, { scroll: false });
-    }
+        router.push(newUrl, { scroll: false });
+      }
+
+      if (selectedFilter !== "") {
+        const newUrl = buildUrlQuery({
+          params: searchParams.toString(),
+          key: "filter",
+          value: selectedFilter,
+        });
+
+        router.push(newUrl, { scroll: false });
+      }
+    }, 0);
+
+    return () => clearTimeout(timer);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [route, selectedFilter]);
@@ -38,7 +52,7 @@ export function useFilter({ route = "/" }) {
       setSelectedFilter(searchParams.get("filter") || "");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchParams]);
+  }, [pathname, searchParams]);
 
   return {
     selectedFilter,

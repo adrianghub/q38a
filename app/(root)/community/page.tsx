@@ -19,7 +19,7 @@ const Page = async () => {
       <h1 className="h1-bold text-dark100_light900">All Users</h1>
 
       <div className="mt-11 flex justify-between gap-5 max-sm:flex-col sm:items-center">
-        <SearchInput placeholder="Search by username..." otherClasses="flex-1" />
+        <SearchInput placeholder="Search by username..." otherClasses="flex-1" route="/community" />
 
         <SelectInput
           options={UserFilters}

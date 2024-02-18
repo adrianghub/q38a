@@ -6,6 +6,7 @@ import {
   GetQuestionByIdParams,
   GetQuestionsParams,
 } from "@/shared/types/shared";
+import { FilterQuery } from "mongoose";
 import { revalidatePath } from "next/cache";
 import { connectToDatabase } from "../db/db";
 import QuestionModel, { IQuestion } from "../db/models/question.model";
@@ -16,7 +17,17 @@ export async function getQuestions(params: GetQuestionsParams) {
   try {
     connectToDatabase();
 
-    const questionsDto = (await QuestionModel.find({})
+    const { searchQuery } = params;
+
+    const query: FilterQuery<typeof QuestionModel> = {};
+
+    if (searchQuery) {
+      const regex = new RegExp(searchQuery ?? "", "i");
+
+      query.$or = [{ title: { $regex: regex } }, { description: { $regex: regex } }];
+    }
+
+    const questionsDto = (await QuestionModel.find(query)
       .populate({ path: "tags", model: Tag })
       .populate({ path: "author", model: User })
       .sort({ publishedAt: -1 })) as IQuestion[];

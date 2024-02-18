@@ -1,4 +1,4 @@
-import { Button } from "@/core/components/ui/button";
+import { Button } from "@/shared/ui/button";
 import Link from "next/link";
 
 type NoResultProps = {

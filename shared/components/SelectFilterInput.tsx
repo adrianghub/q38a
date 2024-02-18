@@ -5,7 +5,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/core/components/ui/select";
+} from "@/shared/ui/select";
 import { useFilter } from "../lib/hooks/useFilter";
 import { cn } from "../lib/utils";
 import { Option } from "../types/filters";

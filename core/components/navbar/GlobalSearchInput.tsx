@@ -1,7 +1,7 @@
 "use client";
 
+import { Input } from "@/shared/ui/input";
 import Image from "next/image";
-import { Input } from "../ui/input";
 
 export const GlobalSearchInput = () => {
   return (

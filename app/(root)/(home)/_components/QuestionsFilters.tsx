@@ -1,11 +1,11 @@
 "use client";
 
-import { Button } from "@/core/components/ui/button";
 import { SelectFilterInput } from "@/shared/components/SelectFilterInput";
 import { HomePageFilters } from "@/shared/constants/filters";
 import { useFilter } from "@/shared/lib/hooks/useFilter";
 import { cn } from "@/shared/lib/utils";
 import { Option } from "@/shared/types/filters";
+import { Button } from "@/shared/ui/button";
 import React from "react";
 
 type QuestionsFiltersParams = {

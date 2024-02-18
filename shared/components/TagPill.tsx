@@ -1,4 +1,4 @@
-import { Badge } from "@/core/components/ui/badge";
+import { Badge } from "@/shared/ui/badge";
 import Link from "next/link";
 import { Tag } from "../types/questions";
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@/core/components/ui/button";
+import { Button } from "@/shared/ui/button";
 import {
   Form,
   FormControl,
@@ -9,12 +9,12 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/core/components/ui/form";
-import { Input } from "@/core/components/ui/input";
+} from "@/shared/ui/form";
+import { Input } from "@/shared/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 // import Image from "next/image";
-import { Badge } from "@/core/components/ui/badge";
 import { createQuestion } from "@/shared/lib/actions/questions.action";
+import { Badge } from "@/shared/ui/badge";
 import { usePathname, useRouter } from "next/navigation";
 import React from "react";
 import { useForm } from "react-hook-form";

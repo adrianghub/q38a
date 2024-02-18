@@ -1,9 +1,9 @@
 "use client";
 
 import { sidebarLinks } from "@/shared/constants/sidebar-links";
+import { Sheet, SheetClose, SheetContent, SheetTrigger } from "@/shared/ui/sheet";
 import Image from "next/image";
 import { useState } from "react";
-import { Sheet, SheetClose, SheetContent, SheetTrigger } from "../ui/sheet";
 import NavLink from "./NavLink";
 
 export function MobileNav() {

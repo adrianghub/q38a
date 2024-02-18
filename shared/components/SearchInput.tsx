@@ -1,6 +1,6 @@
 "use client";
 
-import { Input } from "@/core/components/ui/input";
+import { Input } from "@/shared/ui/input";
 import Image from "next/image";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";

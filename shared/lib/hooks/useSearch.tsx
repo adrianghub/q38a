@@ -36,8 +36,8 @@ export function useSearch({ route = "/" }) {
 
         newUrl = buildUrlQuery({
           params: newUrl.toString(),
-          key: "q",
-          value: searchQuery,
+          keys: ["q", "page"],
+          values: [searchQuery, ""],
         });
 
         router.push(newUrl, { scroll: false });

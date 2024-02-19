@@ -32,8 +32,8 @@ const Pagination = ({
 
     const newUrl = buildUrlQuery({
       params: searchParams.toString(),
-      key: "page",
-      value: nextPageNumber.toString(),
+      keys: ["page"],
+      values: [nextPageNumber.toString()],
     });
 
     router.push(newUrl);

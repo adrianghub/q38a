@@ -8,16 +8,18 @@ export function cn(...inputs: ClassValue[]) {
 
 export function buildUrlQuery({
   params,
-  key,
-  value,
+  keys,
+  values,
 }: {
   params: string;
-  key: string;
-  value: string;
+  keys: string[];
+  values: string[];
 }) {
   const currentParams = qs.parse(params);
 
-  currentParams[key] = value;
+  keys.forEach((key, index) => {
+    currentParams[key] = values[index];
+  });
 
   return qs.stringifyUrl(
     {

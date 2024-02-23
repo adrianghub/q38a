@@ -2,46 +2,47 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { buildUrlQuery, removeKeysFromQuery } from "../utils";
 
-export function useSearch({ route = "/" }) {
+export function useSearch({ route = "/", queryKey = "q" }) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const pathname = usePathname();
-  const [searchQuery, setSearchQuery] = useState<string>(searchParams.get("q") || "");
+  const [searchQuery, setSearchQuery] = useState<string>(searchParams.get(queryKey) || "");
 
-  useEffect(() => {
-    const newUrl = removeKeysFromQuery({
-      params: searchParams.toString(),
-      keysToRemove: ["page"],
-    });
+  const localSearchQuery = searchParams.get("q");
+
+  const updateQueryUrl = (searchQuery: string, localSearchQuery: string | null) => {
+    let newUrl = searchParams.toString();
+
+    if (
+      (searchQuery === "" && pathname === route && localSearchQuery) ||
+      (searchQuery === "" && !localSearchQuery)
+    ) {
+      newUrl = removeKeysFromQuery({
+        params: newUrl,
+        keysToRemove: [queryKey],
+      });
+    } else if (searchQuery !== "") {
+      const keysToAdd = [queryKey];
+      const valuesToAdd = [searchQuery];
+
+      if (localSearchQuery) {
+        keysToAdd.push("page");
+        valuesToAdd.push("");
+      }
+
+      newUrl = buildUrlQuery({
+        params: newUrl,
+        keys: keysToAdd,
+        values: valuesToAdd,
+      });
+    }
 
     router.push(newUrl, { scroll: false });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchQuery]);
+  };
 
   useEffect(() => {
     const debounce = setTimeout(() => {
-      // remove page from query if search query is not empty
-
-      if (searchQuery === "" && pathname === route) {
-        const newUrl = removeKeysFromQuery({
-          params: searchParams.toString(),
-          keysToRemove: ["q"],
-        });
-
-        router.push(newUrl, { scroll: false });
-      }
-
-      if (searchQuery !== "") {
-        let newUrl = searchParams.toString();
-
-        newUrl = buildUrlQuery({
-          params: newUrl.toString(),
-          keys: ["q", "page"],
-          values: [searchQuery, ""],
-        });
-
-        router.push(newUrl, { scroll: false });
-      }
+      updateQueryUrl(searchQuery, localSearchQuery);
     }, 300);
     return () => clearTimeout(debounce);
     // eslint-disable-next-line react-hooks/exhaustive-deps

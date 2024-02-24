@@ -56,7 +56,7 @@ const RightSidebar = () => {
                 alt="right chevron"
                 width={20}
                 height={20}
-                className="invert-colors"
+                className="dark:invert"
               />
             </Link>
           ))}

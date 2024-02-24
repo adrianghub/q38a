@@ -2,7 +2,13 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { buildUrlQuery, removeKeysFromQuery } from "../utils";
 
-export function useSearch({ queryKey = "q", paramsToRemove = [], route }: any) {
+interface Params {
+  queryKey?: string;
+  paramsToRemove?: string[];
+  route?: string;
+}
+
+export function useSearch({ queryKey = "q", paramsToRemove = [], route }: Params) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const pathname = usePathname();
@@ -24,7 +30,7 @@ export function useSearch({ queryKey = "q", paramsToRemove = [], route }: any) {
       newUrl = buildUrlQuery({
         params: newUrl.toString(),
         keys: [queryKey, ...paramsToRemove],
-        values: [searchQuery, ...paramsToRemove.map(() => null)],
+        values: [searchQuery, ...paramsToRemove.map(() => "")],
       });
 
       router.push(newUrl, { scroll: false });

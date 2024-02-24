@@ -3,12 +3,28 @@
 import { useSearch } from "@/shared/lib/hooks/useSearch";
 import { Input } from "@/shared/ui/input";
 import Image from "next/image";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
 import GlobalSearchPopover from "./GlobalSearchPopover";
 
 export const GlobalSearchInput = () => {
   const { searchQuery, setSearchQuery } = useSearch({ queryKey: "global" });
   const [isOpen, setIsOpen] = useState(false);
+  const popoverRef = useRef<HTMLDivElement | null>(null);
+  const searchInputRef = useRef<HTMLInputElement | null>(null);
+
+  useEffect(() => {
+    const handleClick = (e: MouseEvent) => {
+      if (searchInputRef.current && searchInputRef.current.contains(e.target as Node)) return;
+
+      if (popoverRef.current && !popoverRef.current.contains(e.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClick);
+
+    return () => document.removeEventListener("mousedown", handleClick);
+  }, [popoverRef]);
 
   const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
@@ -26,21 +42,23 @@ export const GlobalSearchInput = () => {
           width={24}
           height={24}
           alt="search icon"
+          onClick={() => searchInputRef.current?.focus()}
           className="cursor-pointer dark:invert"
         />
 
         <Input
+          ref={searchInputRef}
           type="search"
           placeholder="Search anything"
           value={searchQuery}
           onChange={(e) => handleSearch(e)}
           onFocus={() => setIsOpen(true)}
-          onBlur={() => setIsOpen(false)}
           onKeyDown={(e) => e.key === "Escape" && setIsOpen(false)}
+          onClick={() => searchInputRef.current?.focus()}
           className="paragraph-regular no-focus placeholder text-dark400_light700 border-none bg-transparent shadow-none outline-none"
         />
       </div>
-      {isOpen && <GlobalSearchPopover />}
+      {isOpen && <GlobalSearchPopover ref={popoverRef} />}
     </div>
   );
 };

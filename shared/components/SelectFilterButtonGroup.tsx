@@ -1,13 +1,34 @@
+import { VariantProps } from "class-variance-authority";
 import { useFilter } from "../lib/hooks/useFilter";
 import { cn } from "../lib/utils";
 import { Option } from "../types/filters";
-import { Button } from "../ui/button";
+import { Button, buttonVariants } from "../ui/button";
 
-const SelectFilterButtonGroup = ({ filters, queryKey, route, paramsToRemove }: any) => {
-  const { selectedFilter, setSelectedFilter } = useFilter({ queryKey, route, paramsToRemove });
+interface SelectFilterButtonGroupProps {
+  filters: Option[];
+  queryKey: string;
+  route?: string;
+  paramsToRemove?: string[];
+  variant?: VariantProps<typeof buttonVariants>["variant"];
+  size?: VariantProps<typeof buttonVariants>["size"];
+}
+
+const SelectFilterButtonGroup = ({
+  filters,
+  queryKey,
+  route,
+  paramsToRemove = [],
+  variant = "default",
+  size = "default",
+}: SelectFilterButtonGroupProps) => {
+  const { selectedFilter, setSelectedFilter } = useFilter({
+    queryKey,
+    route,
+    paramsToRemove,
+  });
 
   const selectFilter = (filter: Option) => {
-    const foundFilter = filters.find((f: any) => f.value === filter.value);
+    const foundFilter = filters.find((f) => f.value === filter.value);
 
     if (foundFilter?.value === selectedFilter) {
       setSelectedFilter("");
@@ -21,16 +42,17 @@ const SelectFilterButtonGroup = ({ filters, queryKey, route, paramsToRemove }: a
 
   return (
     <>
-      {filters.map((filter: any) => (
+      {filters.map((filter) => (
         <Button
           onClick={() => selectFilter(filter)}
-          className={cn(
-            "body-medium rounded-lg px-6 py-3 capitalize shadow-none",
-            selectedFilter === filter.value
-              ? "bg-primary-100 dark:bg-dark-400 text-primary-500"
-              : "bg-light-800 text-light-500 dark:bg-dark-300 dark:text-light-500 hover:bg-primary-100 hover:dark:bg-dark-400"
-          )}
+          className={cn("body-medium rounded-lg px-6 py-3 capitalize shadow-none")}
           key={filter.value}
+          variant={
+            (selectedFilter === filter.value ? `selected-${variant}` : variant) as VariantProps<
+              typeof buttonVariants
+            >["variant"]
+          }
+          size={size}
         >
           {filter.name}
         </Button>

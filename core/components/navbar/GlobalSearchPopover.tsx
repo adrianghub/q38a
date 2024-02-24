@@ -3,8 +3,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
-import GlobalSearchFilters from "./GlobalSearchFilters";
+import { forwardRef, useEffect, useState } from "react";
+import { GlobalSearchFilters } from "./GlobalSearchFilters";
 
 interface SearchResultItem {
   id: number;
@@ -12,7 +12,8 @@ interface SearchResultItem {
   name: string;
 }
 
-const GlobalSearchPopover = () => {
+// eslint-disable-next-line react/display-name
+const GlobalSearchPopover = forwardRef<HTMLDivElement | null>((_, ref) => {
   const searchParams = useSearchParams();
 
   const [isLoading, setIsLoading] = useState(false);
@@ -58,7 +59,7 @@ const GlobalSearchPopover = () => {
 
   return (
     <div className="absolute top-full z-10 mt-3 w-full rounded-xl bg-light-800 py-5 shadow-sm dark:bg-dark-400">
-      <GlobalSearchFilters />
+      <GlobalSearchFilters ref={ref} />
       <div className="my-5 h-[1px] bg-light-700/50 dark:bg-dark-500/50 " />
       <div className="space-y-5">
         <p className="text-dark400_light900 paragraph-semibold px-5">Top Match</p>
@@ -110,6 +111,6 @@ const GlobalSearchPopover = () => {
       </div>
     </div>
   );
-};
+});
 
 export default GlobalSearchPopover;

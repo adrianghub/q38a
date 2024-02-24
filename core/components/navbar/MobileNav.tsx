@@ -17,7 +17,7 @@ export function MobileNav() {
           width={36}
           height={36}
           alt="menu icon"
-          className="invert-colors sm:hidden"
+          className="dark:invert sm:hidden"
           priority={true}
         />
       </SheetTrigger>

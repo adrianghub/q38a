@@ -36,6 +36,6 @@ const TagSchema = new Schema<ITag>({
   },
 });
 
-const Tag = models.Tag || model<ITag>("Tag", TagSchema);
+const TagModel = models.Tag || model<ITag>("Tag", TagSchema);
 
-export default Tag;
+export default TagModel;

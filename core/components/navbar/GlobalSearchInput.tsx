@@ -21,9 +21,11 @@ export const GlobalSearchInput = () => {
       }
     };
 
-    document.addEventListener("mousedown", handleClick);
+    document.addEventListener("click", handleClick);
 
-    return () => document.removeEventListener("mousedown", handleClick);
+    setIsOpen(false);
+
+    return () => document.removeEventListener("click", handleClick);
   }, [popoverRef]);
 
   const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {

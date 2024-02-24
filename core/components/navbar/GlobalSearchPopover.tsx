@@ -1,5 +1,6 @@
 "use client";
 
+import { getGlobalSearchResults } from "@/shared/lib/actions/general.action";
 import Image from "next/image";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
@@ -9,7 +10,7 @@ import { GlobalSearchFilters } from "./GlobalSearchFilters";
 interface SearchResultItem {
   id: number;
   type: string;
-  name: string;
+  title: string;
 }
 
 // eslint-disable-next-line react/display-name
@@ -17,44 +18,43 @@ const GlobalSearchPopover = forwardRef<HTMLDivElement | null>((_, ref) => {
   const searchParams = useSearchParams();
 
   const [isLoading, setIsLoading] = useState(false);
-  const [searchResults, setSearchResults] = useState<SearchResultItem[]>([
-    {
-      id: 1,
-      type: "type",
-      name: "name",
-    },
-    {
-      id: 2,
-      type: "type",
-      name: "name",
-    },
-    {
-      id: 3,
-      type: "type",
-      name: "name",
-    },
-  ]);
+  const [searchResults, setSearchResults] = useState<SearchResultItem[]>([]);
 
   const global = searchParams.get("global");
   const type = searchParams.get("type");
 
   useEffect(() => {
-    // const fetchResult = async () => {
-    //   setSearchResults([]);
-    //   setIsLoading(true);
-    // };
+    const fetchResult = async () => {
+      setSearchResults([]);
+      setIsLoading(true);
 
-    try {
-      // search
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setIsLoading(false);
+      try {
+        const result = await getGlobalSearchResults({ query: global, type });
+
+        setSearchResults(JSON.parse(result));
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    if (global) {
+      fetchResult();
     }
   }, [global, type]);
 
   const renderLink = (type: string, id: string) => {
-    return "/";
+    switch (type) {
+      case "question":
+        return `/questions/${id}`;
+      case "user":
+        return `/profile/${id}`;
+      case "tag":
+        return `/tags/${id}`;
+      default:
+        return "/";
+    }
   };
 
   return (
@@ -81,7 +81,7 @@ const GlobalSearchPopover = forwardRef<HTMLDivElement | null>((_, ref) => {
               searchResults.map((item: SearchResultItem, idx: number) => (
                 <Link
                   key={item.type + item.id + idx}
-                  href={renderLink("type", "id")}
+                  href={renderLink(item.type, item.id.toString())}
                   className="flex w-full cursor-pointer items-start gap-3 px-5 py-2.5 hover:bg-light-700/50 hover:dark:bg-dark-500/50"
                 >
                   <Image
@@ -93,7 +93,7 @@ const GlobalSearchPopover = forwardRef<HTMLDivElement | null>((_, ref) => {
                   />
 
                   <div className="flex flex-col">
-                    <p className="text-dark200_light800 body-medium line-clamp-1">{item.name}</p>
+                    <p className="text-dark200_light800 body-medium line-clamp-1">{item.title}</p>
                     <p className="text-dark400_light500 small-medium mt-1 font-bold capitalize">
                       {item.type}
                     </p>

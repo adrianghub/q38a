@@ -2,51 +2,42 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { buildUrlQuery, removeKeysFromQuery } from "../utils";
 
-export function useSearch({ route = "/", queryKey = "q" }) {
+export function useSearch({ queryKey = "q", paramsToRemove = [], route }: any) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const [searchQuery, setSearchQuery] = useState<string>(searchParams.get(queryKey) || "");
 
-  const localSearchQuery = searchParams.get("q");
-
-  const updateQueryUrl = (searchQuery: string, localSearchQuery: string | null) => {
+  const updateQueryUrl = (searchQuery: string) => {
     let newUrl = searchParams.toString();
 
-    if (
-      (searchQuery === "" && pathname === route && localSearchQuery) ||
-      (searchQuery === "" && !localSearchQuery)
-    ) {
+    if (searchQuery === "" && (pathname === route || !route)) {
+      if (!newUrl.includes(queryKey)) return;
+
       newUrl = removeKeysFromQuery({
         params: newUrl,
-        keysToRemove: [queryKey],
+        keysToRemove: [queryKey, ...paramsToRemove],
       });
-    } else if (searchQuery !== "") {
-      const keysToAdd = [queryKey];
-      const valuesToAdd = [searchQuery];
 
-      if (localSearchQuery) {
-        keysToAdd.push("page");
-        valuesToAdd.push("");
-      }
-
+      router.push(newUrl, { scroll: false });
+    } else {
       newUrl = buildUrlQuery({
-        params: newUrl,
-        keys: keysToAdd,
-        values: valuesToAdd,
+        params: newUrl.toString(),
+        keys: [queryKey, ...paramsToRemove],
+        values: [searchQuery, ...paramsToRemove.map(() => null)],
       });
-    }
 
-    router.push(newUrl, { scroll: false });
+      router.push(newUrl, { scroll: false });
+    }
   };
 
   useEffect(() => {
     const debounce = setTimeout(() => {
-      updateQueryUrl(searchQuery, localSearchQuery);
+      updateQueryUrl(searchQuery);
     }, 300);
     return () => clearTimeout(debounce);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pathname, searchQuery, searchParams]);
+  }, [pathname, searchQuery]);
 
   return {
     searchQuery,

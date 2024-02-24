@@ -2,43 +2,41 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { buildUrlQuery, removeKeysFromQuery } from "../utils";
 
-export function useFilter({ route = "/" }) {
+export function useFilter({ queryKey = "filter", paramsToRemove = [], route }: any) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const pathname = usePathname();
-  const [selectedFilter, setSelectedFilter] = useState<string>(searchParams.get("filter") || "");
+  const [selectedFilter, setSelectedFilter] = useState<string>(searchParams.get(queryKey) || "");
 
-  useEffect(() => {
-    if ((selectedFilter === "" && pathname === route) || selectedFilter === "all") {
+  const updateQueryUrl = (selectedFilter: string) => {
+    let newUrl = searchParams.toString();
+
+    if ((selectedFilter === "" && (pathname === route || !route)) || selectedFilter === "all") {
       setSelectedFilter("");
 
-      const newUrl = removeKeysFromQuery({
+      if (!newUrl.includes(queryKey)) return;
+
+      newUrl = removeKeysFromQuery({
         params: searchParams.toString(),
-        keysToRemove: ["filter", "page"],
+        keysToRemove: [queryKey, ...paramsToRemove],
+      });
+
+      router.push(newUrl, { scroll: false });
+    } else {
+      newUrl = buildUrlQuery({
+        params: searchParams.toString(),
+        keys: [queryKey, ...paramsToRemove],
+        values: [selectedFilter, ...paramsToRemove.map(() => null)],
       });
 
       router.push(newUrl, { scroll: false });
     }
-
-    if (selectedFilter !== "") {
-      const newUrl = buildUrlQuery({
-        params: searchParams.toString(),
-        keys: ["filter", "page"],
-        values: [selectedFilter, ""],
-      });
-
-      router.push(newUrl, { scroll: false });
-    }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [route, selectedFilter]);
+  };
 
   useEffect(() => {
-    if (searchParams.get("filter") !== selectedFilter) {
-      setSelectedFilter(searchParams.get("filter") || "");
-    }
+    updateQueryUrl(selectedFilter);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pathname, searchParams]);
+  }, [pathname, selectedFilter]);
 
   return {
     selectedFilter,

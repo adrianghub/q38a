@@ -27,7 +27,7 @@ export const SelectFilterInput = ({
   otherClasses,
   route = "/",
 }: SelectInputProps) => {
-  const { selectedFilter, setSelectedFilter } = useFilter({ route });
+  const { selectedFilter, setSelectedFilter } = useFilter({ route, paramsToRemove: ["page"] });
 
   return (
     <div className={cn("relative", containerClasses)}>

@@ -20,7 +20,7 @@ export const SearchInput = ({
   iconUrl = "/assets/icons/search.svg",
   otherClasses,
 }: SearchProps) => {
-  const { searchQuery, setSearchQuery } = useSearch({ route });
+  const { searchQuery, setSearchQuery } = useSearch({ paramsToRemove: ["page"] });
 
   return (
     <div

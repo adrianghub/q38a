@@ -17,7 +17,7 @@ export async function getQuestions(params: GetQuestionsParams) {
   try {
     connectToDatabase();
 
-    const { searchQuery, filter, page = 1, pageSize = 1 } = params;
+    const { searchQuery, filter, page = 1, pageSize = 3 } = params;
 
     const skipAmount = (page - 1) * pageSize;
 
@@ -144,3 +144,16 @@ const mapQuestionsDtoToQuestions = (questionsDto: IQuestion[]): Question[] =>
         },
       },
     }));
+
+export async function getTopQuestions() {
+  try {
+    connectToDatabase();
+
+    const questions = await QuestionModel.find().sort({ views: -1, upvotes: -1 }).limit(5);
+
+    return mapQuestionsDtoToQuestions(questions);
+  } catch (error) {
+    console.error("Error getting top questions", error);
+    throw error;
+  }
+}

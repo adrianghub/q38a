@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 // eslint-disable-next-line camelcase
 import { Inter, Nunito_Sans } from "next/font/google";
 import React from "react";
+import "../core/styles/prism.css";
 import "./globals.css";
 
 const inter = Inter({

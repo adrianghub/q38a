@@ -42,11 +42,20 @@ export const SelectFilterInput = ({
             <SelectValue placeholder={placeholder} />
           </div>
         </SelectTrigger>
-        <SelectContent>
-          <SelectItem value="all">All</SelectItem>
+        <SelectContent className="small-regular border-none bg-light-900 text-dark-500 dark:bg-dark-300 ">
+          <SelectItem
+            value="all"
+            className="text-dark500_light700 cursor-pointer focus:bg-light-800 dark:focus:bg-dark-400"
+          >
+            All
+          </SelectItem>
           <SelectGroup>
             {options.map((option) => (
-              <SelectItem key={option.value} value={String(option.value)}>
+              <SelectItem
+                key={option.value}
+                value={String(option.value)}
+                className="text-dark500_light700 cursor-pointer focus:bg-light-800 dark:focus:bg-dark-400"
+              >
                 {option.name}
               </SelectItem>
             ))}

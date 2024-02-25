@@ -1,9 +1,10 @@
+import { Tag } from "@/shared/types/questions";
 import { Document, Model, Schema, model, models } from "mongoose";
 
 export interface IQuestion extends Document {
   title: string;
   description: string;
-  tags: string[];
+  tags: Tag[];
   views: number;
   upvotes: Schema.Types.ObjectId[];
   downvotes: Schema.Types.ObjectId[];

@@ -39,3 +39,37 @@ export async function getTopInteractedTags(params: GetTopInteractedTagsParams) {
     throw new Error("Error getting users");
   }
 }
+
+export async function getPopularTags() {
+  try {
+    connectToDatabase();
+
+    const tags = await Tag.aggregate([
+      {
+        $lookup: {
+          from: "questions",
+          localField: "_id",
+          foreignField: "tags",
+          as: "questions",
+        },
+      },
+      {
+        $project: {
+          name: 1,
+          totalQuestions: { $size: "$questions" },
+        },
+      },
+      {
+        $sort: { totalQuestions: -1 },
+      },
+      {
+        $limit: 5,
+      },
+    ]);
+
+    return tags;
+  } catch (error) {
+    console.error("Error getting popular tags", error);
+    throw new Error("Error getting popular tags");
+  }
+}

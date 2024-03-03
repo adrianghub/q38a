@@ -1,4 +1,5 @@
 import { TagPill } from "@/shared/components/TagPill";
+import { getTimestamp } from "@/shared/lib/utils";
 import { Question } from "@/shared/types/questions";
 import Image from "next/image";
 import Link from "next/link";
@@ -31,7 +32,7 @@ export const QuestionCard = ({ _id, title, tags, author, publishedAt, statistics
           {author.name}
         </Link>
         <span>•</span>
-        <span className="body-medium text-dark400_light700">asked {publishedAt.toISOString()}</span>
+        <span className="body-medium text-dark400_light700">asked {getTimestamp(publishedAt)}</span>
       </p>
 
       <div className="flex gap-3">

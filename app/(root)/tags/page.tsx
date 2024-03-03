@@ -3,15 +3,9 @@ import { SearchInput } from "@/shared/components/SearchInput";
 import { SelectFilterInput } from "@/shared/components/SelectFilterInput";
 import { TagFilters } from "@/shared/constants/filters";
 import { getTags } from "@/shared/lib/actions/tag.actions";
-import { auth } from "@clerk/nextjs";
 import Link from "next/link";
-import { redirect } from "next/navigation";
 
 const Page = async () => {
-  const { userId } = auth();
-
-  if (!userId) redirect("/sign-in");
-
   const tags = await getTags({});
 
   return (

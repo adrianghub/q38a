@@ -3,15 +3,9 @@ import { SearchInput } from "@/shared/components/SearchInput";
 import { SelectFilterInput } from "@/shared/components/SelectFilterInput";
 import { UserFilters } from "@/shared/constants/filters";
 import { getUsers } from "@/shared/lib/actions/user.action";
-import { auth } from "@clerk/nextjs";
 import Link from "next/link";
-import { redirect } from "next/navigation";
 
 const Page = async () => {
-  const { userId } = auth();
-
-  if (!userId) redirect("/sign-in");
-
   const users = await getUsers({});
 
   return (

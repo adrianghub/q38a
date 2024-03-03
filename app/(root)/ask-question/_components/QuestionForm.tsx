@@ -22,10 +22,9 @@ import { z } from "zod";
 import { questionsSchema } from "../_validations/form-validations";
 import { CustomTextEditor } from "./Editor";
 
-// TODO: Remove temp variable
-const mode: string = "create";
+interface Props { userId: string, mode?: "create" | "edit" }
 
-const QuestionForm = ({ userId }: { userId: string }) => {
+const QuestionForm = ({ userId, mode = "create" }: Props) => {
   const form = useForm<z.infer<typeof questionsSchema>>({
     resolver: zodResolver(questionsSchema),
     defaultValues: {
